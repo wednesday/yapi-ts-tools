@@ -107,10 +107,6 @@ buttons.req.addEventListener('click', async () => {
 })
 buttons.res.addEventListener('click', async () => {
   const data = await getYApiData()
-  if(data.method === 'GET'){
-    alert('get请求暂不支持')
-    return
-  }
   const name = data.path.split('/').map(p => p.charAt(0).toLocaleUpperCase() + p.slice(1)).join('') + 'Res';
   const res = runner(name, data.res, { typeMode: GM_getValue(menu[0].key) })
   console.log(res)
