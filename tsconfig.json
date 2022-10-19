@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "strict": true,
+      "importHelpers": true,
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "experimentalDecorators":true,
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "baseUrl": ".",
+      "lib": [
+        "esnext",
+        "dom"
+      ],
+      "noImplicitAny": false,
+    },
+    "ts-node": {
+      "esm": true,
+      "experimentalSpecifierResolution": true
+    },
+    "exclude": [
+      "node_modules",
+    ]
+  }
+  

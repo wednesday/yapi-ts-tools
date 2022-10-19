@@ -1,0 +1,26 @@
+{
+  "name": "yapi-tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c --bundleConfigAsCjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "clipboardy": "^3.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^18.11.0",
+    "@types/tampermonkey": "^4.0.5",
+    "rollup": "^3.2.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rollup-plugin-typescript": "^1.0.1",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.4"
+  }
+}
