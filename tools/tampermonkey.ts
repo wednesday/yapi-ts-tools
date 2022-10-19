@@ -77,12 +77,8 @@ async function getYApiData(): Promise<YapiData> {
   });
 
   const { data } = await yapiReq.json();
-  try {
-    data.req = JSON.parse(data.req_body_other)
-    data.res = JSON.parse(data.res_body)
-  } catch (error) {
-    console.warn(error)
-  }
+  data.req = JSON.parse(data.req_body_other||'')
+  data.res = JSON.parse(data.res_body||'')
   return data
 }
 
@@ -90,71 +86,63 @@ const buttons = {
   req: document.createElement('button'),// req
   res: document.createElement('button'),// res
 }
-buttons.req.className = "lucky-btn"
-buttons.res.className = "lucky-btn"
-
+const boxContainer = document.createElement('div');
+boxContainer.className = 'ts-tools';
+buttons.req.className = "lucky-btn";
+buttons.req.innerHTML = 'req type'
+buttons.res.className = "lucky-btn";
+buttons.res.innerHTML = 'res type'
+boxContainer.appendChild(buttons.req)
+boxContainer.appendChild(buttons.res)
 buttons.req.addEventListener('click', async () => {
-  const data = await getYApiData()
-  if(data.method === 'GET'){
-    alert('get请求暂不支持')
-    return
-  }
-  const name = data.path.split('/').map(p => p.charAt(0).toLocaleUpperCase() + p.slice(1)).join('') + 'Req';
-  const res = runner(name, data.req, { typeMode: GM_getValue(menu[0].key) })
-  console.log(res)
-  navigator.clipboard.writeText(res)
-  GM_notification({ text: `帮你放到剪贴板了，直接粘贴到文件吧`, timeout: 3500 });
-})
+    const data = await getYApiData();
+    if (data.method === 'GET') {
+        alert('get请求暂不支持');
+        return;
+    }
+    const name = data.path.split('/').map(p => p.charAt(0).toLocaleUpperCase() + p.slice(1)).join('') + 'Req';
+    const res = runner(name, data.req, { typeMode: GM_getValue(menu[0].key) });
+    console.log(res);
+    navigator.clipboard.writeText(res);
+    GM_notification({ text: `帮你放到剪贴板了，直接粘贴到文件吧`, timeout: 3500 });
+});
 buttons.res.addEventListener('click', async () => {
-  const data = await getYApiData()
-  const name = data.path.split('/').map(p => p.charAt(0).toLocaleUpperCase() + p.slice(1)).join('') + 'Res';
-  const res = runner(name, data.res, { typeMode: GM_getValue(menu[0].key) })
-  console.log(res)
-  navigator.clipboard.writeText(res)
-  GM_notification({ text: `帮你放到剪贴板了，直接粘贴到文件吧`, timeout: 3500 });
-})
-
-function insertButtons() {
-  const targetReqHtml = document.querySelectorAll('h2')[2];
-  const targetResHtml = document.querySelectorAll('h2')[3];
-  buttons.req.innerText = "TS " + GM_getValue(menu[0].key) ? "type" : "interface"
-  buttons.res.innerText = "TS " + GM_getValue(menu[0].key) ? "type" : "interface"
-  if (targetReqHtml) {
-    targetReqHtml.appendChild(buttons.req);
-  }
-  if (targetResHtml) {
-    targetResHtml.appendChild(buttons.res);
-  }
-}
-function addGlobalStyle(css: string) {
-  var head, style;
-  head = document.getElementsByTagName('head')[0];
-  if (!head) { return; }
-  style = document.createElement('style');
-  style.type = 'text/css';
-  style.innerHTML = css;
-  head.appendChild(style);
+    const data = await getYApiData();
+    const name = data.path.split('/').map(p => p.charAt(0).toLocaleUpperCase() + p.slice(1)).join('') + 'Res';
+    const res = runner(name, data.res, { typeMode: GM_getValue(menu[0].key) });
+    console.log(res);
+    navigator.clipboard.writeText(res);
+    GM_notification({ text: `帮你放到剪贴板了，直接粘贴到文件吧`, timeout: 3500 });
+});
+function addGlobalStyle(css) {
+    var head, style;
+    head = document.getElementsByTagName('head')[0];
+    if (!head) {
+        return;
+    }
+    style = document.createElement('style');
+    style.type = 'text/css';
+    style.innerHTML = css;
+    head.appendChild(style);
 }
 addGlobalStyle(`
+.ts-tools {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
 .lucky-btn {
   font-size: 16px;
   line-height: 16px;
-  border: aqua solid 1px;
+  border: none;
   border-radius: 4px;
   padding: 2px 4px;
-  margin-left: 8px;
-  background: aquamarine;
+  margin-bottom: 8px;
+  background: rgb(127 255 212 / 50%);
   color: white;
   cursor: pointer;
 }
-`)
-
-setTimeout(() => {
-  insertButtons()
-  const apiChangeButton = document.querySelectorAll('.ant-tree-node-content-wrapper');
-  apiChangeButton.forEach(bu => {
-    bu.addEventListener('click', () => {
-      insertButtons()
-    });
-  });
-}, 2000)
+`);
+document.body.appendChild(boxContainer)
