@@ -15,7 +15,7 @@
         "esnext",
         "dom"
       ],
-      "noImplicitAny": false
+      "noImplicitAny": false,
     },
     "ts-node": {
       "esm": true,

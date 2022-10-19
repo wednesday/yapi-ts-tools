@@ -21,10 +21,22 @@ export interface BaseLeaf {
   children?: BaseLeaf[],
   parent?: BaseLeaf,
 }
-export const tree: BaseLeaf[] = []
-export const twig: BaseLeaf[] = []
-
-export const toBaseLeaf = (key: string, propertie: Propertie, parent?: BaseLeaf) => {
+export class ApiTree {
+  tree:BaseLeaf[] = []
+  twig:BaseLeaf[] = []
+}
+interface IToBaseLeaf {
+  key: string, 
+  propertie: Propertie, 
+  apiTree: ApiTree,
+  parent?: BaseLeaf
+}
+export const toBaseLeaf = ({
+  key, 
+  propertie, 
+  apiTree,
+  parent
+}:IToBaseLeaf) => {
   const leaf: BaseLeaf = {
     name: key,
     type: propertie.type,
@@ -36,10 +48,15 @@ export const toBaseLeaf = (key: string, propertie: Propertie, parent?: BaseLeaf)
     leaf.children = []
     for (const childKey in propertie.properties) {
       if (Object.prototype.hasOwnProperty.call(propertie.properties, childKey)) {
-        leaf.children.push(toBaseLeaf(childKey, propertie.properties[childKey], leaf))
+        leaf.children.push(toBaseLeaf({
+          key:childKey, 
+          propertie:propertie.properties[childKey], 
+          apiTree,
+          parent:leaf
+        }))
       }
     }
-    twig.push(leaf)
+    apiTree.twig.push(leaf)
   }
   if (propertie.type === 'array') {
     leaf.isArray = true
@@ -47,16 +64,21 @@ export const toBaseLeaf = (key: string, propertie: Propertie, parent?: BaseLeaf)
       leaf.children = []
       for (const childKey in propertie.items.properties) {
         if (Object.prototype.hasOwnProperty.call(propertie.items.properties, childKey)) {
-          leaf.children.push(toBaseLeaf(childKey, propertie.items.properties[childKey], leaf))
+          leaf.children.push(toBaseLeaf({
+            key:childKey, 
+            propertie:propertie.items.properties[childKey], 
+            apiTree,
+            parent:leaf
+          }))
         }
       }
-      twig.push(leaf)
+      apiTree.twig.push(leaf)
     } else {
       leaf.type = propertie.items.type
     }
   }
   leaf.type = toTypeName(leaf)
-  tree.push(leaf)
+  apiTree.tree.push(leaf)
   return leaf
 }
 const nameFactory = (value: string, parent?: BaseLeaf, isPrimary?: boolean) => {
