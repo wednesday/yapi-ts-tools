@@ -77,8 +77,8 @@ async function getYApiData(): Promise<YapiData> {
   });
 
   const { data } = await yapiReq.json();
-  data.req = JSON.parse(data.req_body_other||'')
-  data.res = JSON.parse(data.res_body||'')
+  data.req = JSON.parse(data.req_body_other||'{}')
+  data.res = JSON.parse(data.res_body||'{}')
   return data
 }
 
