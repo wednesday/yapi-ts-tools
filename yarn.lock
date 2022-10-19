@@ -52,6 +52,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.0.tgz#f38c7139247a1d619f6cc6f27b072606af7c289d"
   integrity sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==
 
+"@types/tampermonkey@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.npmmirror.com/@types/tampermonkey/-/tampermonkey-4.0.5.tgz#03a0c2366a7c1fe5e1c77c88adf568f40b3c18e5"
+  integrity sha512-FGPo7d+qZkDF7vyrwY1WNhcUnfDyVpt2uyL7krAu3WKCUMCfIUzOuvt8aSk8N2axHT8XPr9stAEDGVHLvag6Pw==
+
 acorn-walk@^8.1.1:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.2.0.tgz#741210f2e2426454508853a2f44d0ab83b7f69c1"
